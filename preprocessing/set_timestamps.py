@@ -36,6 +36,9 @@ def main():
     if args.session == '':
         src_dir = util.print_and_select_session(rootdir=rootdir)
         session = os.path.split(src_dir)[-1]
+    else:
+        session = args.session
+        src_dir = os.path.join(rootdir, session)
 
     # Check for existing params
     proc_fname = '%s.json' % session
@@ -47,14 +50,23 @@ def main():
         procparams={}
 
     # get file number (if >1)
-    movie_fpaths = sorted(glob.glob(os.path.join(src_dir, '{}*.MOV'.format(session))), 
-                        key=util.natsort)
+    raw_fmt=r"%s_\d{3}.MOV" % session
+    movie_fpaths = sorted([i for i in 
+            glob.glob(os.path.join(src_dir, '{}*.MOV'.format(session)))\
+            if re.findall(raw_fmt, i)], key=util.natsort)
+
+    #movie_fpaths = sorted(glob.glob(os.path.join(src_dir, '{}*.MOV'.format(session))), 
+    #                    key=util.natsort)
+    print("Found %i movies" % len(movie_fpaths))
 
     for fpath in movie_fpaths: 
         _, fn = os.path.split(fpath)
         movie_fname = os.path.splitext(fn)[0]
-
+        print("-------------------------------")
+        print("Movie: {}".format(movie_fname))
+        
         # get start/end times
+        confirmed=False
         while not confirmed:
             start_t = input("Enter start time ('00:00:00.0' HH:mm:ss.ss): ") 
             end_t = input('Enter end time (hit ENTER to go to end of movie): ')
@@ -77,7 +89,7 @@ def main():
 
     # save params
     with open(proc_input_file, 'w') as f:
-        json.dump(procparams, f)
+        json.dump(procparams, f, indent=4)
 
     print("Done!")
     
