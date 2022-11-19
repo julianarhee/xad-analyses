@@ -1,0 +1,28 @@
+name: dlcm1
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - numpy
+  - python=3.8
+  - scipy
+  - ipython
+  - matplotlib
+  - pip
+  - tensorflow-deps
+  - ruamel.yaml
+  - ffmpeg
+  - scikit-learn
+  - statsmodels
+  - jupyter
+  - imgaug
+  - scikit-image
+  - nb_conda
+  - moviepy
+  - python.app
+  - numba
+  - tqdm
+  - filterpy
+  - jupyterthemes
+  - pytables
+prefix: /Users/julianarhee/miniforge3/envs/dlcm1
