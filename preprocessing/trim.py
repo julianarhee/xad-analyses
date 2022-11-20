@@ -134,7 +134,8 @@ def trim_movie_epoch(input_movie, start_time_sec, end_time_sec, output_movie=Non
 #                epoch=epoch, verbose=True)
 
 
-def process_session_movies(src_dir, epoch='nobarrier', overwrite=False):
+def process_session_movies(src_dir, epoch='nobarrier', overwrite=False,
+        rootdir='/Users/julianarhee/Movies/grass2022/canon-bandensis'):
     '''
     Load params specifying trial epoch, trim movie.
 
@@ -166,7 +167,8 @@ def process_session_movies(src_dir, epoch='nobarrier', overwrite=False):
         input_movie = movie_params['filepath']
         start_t, end_t = movie_params[epoch]
 
-        output_movie = create_trimmed_movie_name(input_movie, epoch=epoch)
+        output_movie = create_trimmed_movie_name(input_movie, epoch=epoch, 
+                            rootdir=rootdir)
         print("Creating clip: {}".format(output_movie))
 
         # check if movie already processed 
@@ -180,7 +182,7 @@ def process_session_movies(src_dir, epoch='nobarrier', overwrite=False):
             # trim  
             trim_movie_epoch(input_movie, float(start_time), float(end_time), 
                     epoch=epoch, verbose=True, output_movie=output_movie,
-                    overwrite=overwrite)
+                    overwrite=overwrite, rootdir=rootdir)
 
         new_movies.append(output_movie)
 
@@ -218,9 +220,18 @@ def main():
         src_dir = os.path.join(rootdir, session)
         assert os.path.exists(src_dir), "Speified src does not exist: %s" % src_dir
 
-    new_movies = process_session_movies(src_dir, epoch=epoch, overwrite=overwrite)
+    new_movies = process_session_movies(src_dir, epoch=epoch, overwrite=overwrite, rootdir=rootdir)
 
-    
+    # move untouched movies to 'raw' dir
+    rawdir = os.path.join(src_dir, 'raw')
+    if not os.path.exists(rawdir):
+        os.makedirs(rawdir)
+    all_movs = glob.glob(os.path.join(src_dir, '*.MOV'))
+    raw_movs = [f for f in all_movs if re.findall('_\d{3}.MOV', f)]    
+    for fn in raw_movs:
+        fname = os.path.split(fn)[-1]
+        shutil.move(fn, os.path.join(rawdir, fname))    
+
 #%%
 if __name__ == '__main__':
 
