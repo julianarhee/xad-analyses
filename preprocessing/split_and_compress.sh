@@ -7,7 +7,7 @@ shopt -s globstar
 
 echo "Processing $srcdir"
 
-for f in $srcdir/*/*/*.MOV; do
+for f in $srcdir/*.MOV; do
   d=${f%.MOV} # get movie filename to make subdir
   b=$(basename -s .MOV "$f") # get file basename without ext
 
@@ -23,7 +23,7 @@ echo "Compressing $srcdir"
 
 for dir in $srcdir/*/; do
   if [ -d "$dir" ]; then
-    dir=${dir%*/}      # remove the trailing "/"
+    #dir=${dir%*/}      # remove the trailing "/"
     for f in $dir/*/*.MOV; do
       parentdir="$(dirname "$f")"
       dstdir = "$parentdir/compressed"

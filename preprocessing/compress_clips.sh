@@ -5,16 +5,34 @@ dstdir="$2"
 
 shopt -s globstar 
 
-echo "Processing $srcdir"
+echo "Compressing $srcdir"
 
-for dir in $srcdir/*/; do
-  if [ -d "$dir" ]; then
-    dir=${dir%*/}      # remove the trailing "/"
-    for f in $dir/*/*.MOV; do
+#for dir in $srcdir/*/; do
+#  if [ -d "$dir" ]; then
+#    dir=${dir%*/}      # remove the trailing "/"
+#    for f in $dir/*/*.MOV; do
+#      parentdir="$(dirname "$f")"
+#      b=$(basename -s .MOV "$f")
+#      ffmpeg -i "$f" -vcodec libx265 -crf 28 "$parentdir/${b}_c.MOV"    
+#    done
+#  fi
+#done
+
+for sdir in $srcdir/*/; do
+  if [ -d "$sdir" ]; then
+    ddir=${sdir%*/}      # remove the trailing "/"
+    for f in $ddir/*.MOV; do
       parentdir="$(dirname "$f")"
-      b=$(basename -s .MOV "$f")
-      ffmpeg -i "$f" -vcodec libx265 -crf 28 "$parentdir/${b}_c.MOV"    
+      bname=$(basename "$parentdir")
+      if [ "$bname" != "raw" ]; then
+        dstdir="$parentdir/compressed"
+        mkdir -p "$dstdir" 
+        b=$(basename -s .MOV "$f")
+        echo "$dstdir/${b}_c.MOV"
+        ffmpeg -i "$f" -vcodec libx265 -crf 28 "$dstdir/${b}_c.MOV"    
+      fi
     done
+    echo "Done compressing!"
   fi
 done
 
