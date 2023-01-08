@@ -1,7 +1,19 @@
-# preprocessing steps
+# Preprocess raw videos for analysis
+Takes huge vidoes (100s GB) and splits and compresses them into manageable chunks. 
+
+## setup
+Runs on Mac M1 (also Ubuntu 20 LTS). Uses ffmpeg with libx265 compression. 
+
+Start miniforge env (is using Apple M1) called `pymov`
+```
+source ~/miniforge3/bin/activate 
+conda activate pymov
+```
+
+## preprocessing steps
 Huge .MOV files are trimmed, split, then compressed for better data transfer and handling. Use `pymov` environment.
 
-#### Identify trial epochs
+#### identify trial epochs
 1. Manually define timestamps to mark trial epochs, e.g., barrier, nobarrier, etc. 
 ```
 $ python set_timestamps.py -R [rootdir] -S [session]
@@ -14,12 +26,17 @@ $ python trim.py -R [rootdir] -S [session] -E [epoch]
 ```
 Trim out specific trial epoch. Currently, only tested with `nobarrier` epoch. TODO: aggregate pre/barrier epochs into 1 vid. Moves all the raw videos into a `raw` dir in the src folder.
 
-#### Split and compress videos
-Find all .MOV files in each session folder (currently assumes there is just 1), then save 10-min clips in a subfolder with the same name as the video.
+#### split and compress videos
+Find all .MOV files in each session folder (creates a subdir for each .MOV file found), then save 10-min clips in a subfolder with the same name as the video.
 ```
-$ bash split_and_compress.sh [rootdir]
+# First, split and save movie chunks
+$ bash split_movies.sh [moviedir]
+
+# Then, compress movie chunks into a subsubdir
+$ sh compress_clips.sh [moviedir]
 ```
-Here, `rootdir` is the same as above, but specifically, contains <session> subfolders, each containing 1 huge .MOV that needs to be split and compressed.
+- Here, `moviedir` is the same as above, but specifically, contains <session> subfolders, each containing 1 huge .MOV that needs to be split and compressed. For example, `/Users/julianarhee/Movies/grass2022/canon-bandensis/20220817-1415-bandensis_L-max_R-esteban`. Does this for each clip subfolder found in the main session dir.
+
 
 
 
