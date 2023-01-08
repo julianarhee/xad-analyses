@@ -221,18 +221,23 @@ def main():
         src_dir = os.path.join(rootdir, session)
         assert os.path.exists(src_dir), "Speified src does not exist: %s" % src_dir
 
-    new_movies = process_session_movies(src_dir, epoch=epoch, overwrite=overwrite, rootdir=rootdir)
+    try:
+        new_movies = process_session_movies(src_dir, epoch=epoch, overwrite=overwrite, rootdir=rootdir)
 
-    # move untouched movies to 'raw' dir
-    rawdir = os.path.join(src_dir, 'raw')
-    if not os.path.exists(rawdir):
-        os.makedirs(rawdir)
-    all_movs = glob.glob(os.path.join(src_dir, '*.MOV'))
-    raw_movs = [f for f in all_movs if re.findall('_\d{3}.MOV', f)]    
-    for fn in raw_movs:
-        fname = os.path.split(fn)[-1]
-        shutil.move(fn, os.path.join(rawdir, fname))    
+        # move untouched movies to 'raw' dir
+        rawdir = os.path.join(src_dir, 'raw')
+        if not os.path.exists(rawdir):
+            os.makedirs(rawdir)
+        all_movs = glob.glob(os.path.join(src_dir, '*.MOV'))
+        raw_movs = [f for f in all_movs if re.findall('_\d{3}.MOV', f)]    
+        for fn in raw_movs:
+            fname = os.path.split(fn)[-1]
+            shutil.move(fn, os.path.join(rawdir, fname))    
+    except Exception as e:
+        print(e)
 
+
+    
 #%%
 if __name__ == '__main__':
 
