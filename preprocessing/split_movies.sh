@@ -19,22 +19,4 @@ for f in $srcdir/*.MOV; do
   fi
 done
 
-echo "Compressing $srcdir"
-
-for dir in $srcdir/*/; do
-  if [ -d "$dir" ]; then
-    #dir=${dir%*/}      # remove the trailing "/"
-    for f in $dir/*/*.MOV; do
-      parentdir="$(dirname "$f")"
-      dstdir = "$parentdir/compressed"
-      mkdir -p "$dstdir" 
-      echo "Compressing vids..."
-      b=$(basename -s .MOV "$f")
-      ffmpeg -i "$f" -vcodec libx265 -crf 28 "$dstdir/${b}_c.MOV"    
-    done
-    echo "Done compressing! Deleting vids"
-  fi
-done
-
-
 

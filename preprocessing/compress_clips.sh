@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 srcdir="$1"
-dstdir="$2"
 
 shopt -s globstar 
 
