@@ -28,7 +28,7 @@ for sdir in $srcdir/*/; do
         mkdir -p "$dstdir" 
         b=$(basename -s .MOV "$f")
         echo "$dstdir/${b}_c.MOV"
-        ffmpeg -i "$f" -vcodec libx265 -crf 28 "$dstdir/${b}_c.MOV"    
+        ffmpeg -i "$f" -vcodec libx265 -crf 28 -tag:v hvc1 "$dstdir/${b}_c.MOV"    
       fi
     done
     echo "Done compressing!"
