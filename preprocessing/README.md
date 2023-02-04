@@ -31,12 +31,19 @@ Find all .MOV files in each session folder (creates a subdir for each .MOV file 
 ```
 # First, split and save movie chunks
 $ bash split_movies.sh [moviedir]
+- assumes there is only 1 .MOV file in the specified directory
 
 # Then, compress movie chunks into a subsubdir
 $ sh compress_clips.sh [moviedir]
 ```
-- Here, `moviedir` is the same as above, but specifically, contains <session> subfolders, each containing 1 huge .MOV that needs to be split and compressed. For example, `/Users/julianarhee/Movies/grass2022/canon-bandensis/20220817-1415-bandensis_L-max_R-esteban`. Does this for each clip subfolder found in the main session dir.
+- Here, `moviedir` is the same as above, but specifically, contains <session> subfolders, each containing 1 huge .MOV that needs to be split and compressed. For example, `/Users/julianarhee/Movies/grass2022/canon-bandensis/20220817-1415-bandensis_L-max_R-esteban`. Does this for each clip subfolder found in the main session dir. Skips `raw` directory containing raw videos.
 
+#### convert videos (optional)
+Some movies need to be converted to play in Quicktime or Keynote, etc. on Mac. Quickly convert:
+```
+sh convert_hvc1.sh [moviedir] 
+```
+- looks in subfolder `[moviedir]/[clipdir]/compressed`
 
 
 
