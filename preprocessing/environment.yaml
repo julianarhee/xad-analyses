@@ -1,0 +1,30 @@
+name: pymov
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - matplotlib
+  - ipython
+  - pip
+  - scipy
+  - python=3.8
+  - numpy
+  - pandas
+  - tensorflow-deps
+  - filterpy
+  - jupyter
+  - numba
+  - python.app
+  - tqdm
+  - moviepy
+  - ffmpeg
+  - scikit-image
+  - nb_conda
+  - ruamel.yaml
+  - scikit-learn
+  - statsmodels
+  - imageio-ffmpeg
+  - jupyterthemes
+  - pytables
+  - astropy
+prefix: /Users/julianarhee/miniforge3/envs/pymov
